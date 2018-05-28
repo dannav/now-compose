@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+
+// App
+const run = require('../lib/cli')
+const { version } = require('../package')
+
+// Deps
+const arg = require('arg')
+
+const processArgs = process.argv.slice(2)
+
+const args = arg(
+  {
+    '--help': Boolean,
+    '--file': String,
+    '--version': Boolean,
+
+    '-h': '--help',
+    '-f': '--file',
+    '-v': '--version'
+  },
+  {
+    argv: processArgs
+  }
+)
+
+// the first argument passed is the command to run
+const command = processArgs.shift()
+const { '--help': showHelp, '--version': showVersion } = args
+
+// if no command is passed in show help screen
+if (showHelp || !command) {
+  console.log(`
+    Description
+      Docker compose for zeit/now.
+    Usage
+      $ now-compose <now-compose command || docker-compose command>
+    Now Compose Commands
+      up                    Run docker-compose "up" command. now-compose will intercept
+                            any static or nodejs service configurations and serve them with micro-proxy.
+
+      stop                  Run docker-compose "stop" command. now-compose will
+                            stop any services currently running with micro-proxy.
+
+      down                  Run docker-compose "down" command. now-compose will
+                            stop any services currently running with micro-proxy.
+
+      deploy                Deploy your project to zeit/now. docker-compose deploy is not supported.
+
+    Docker Compose Commands
+      now-compose forwards all other commands to docker-compose with any arguments
+      you have defined. Please refer to https://docs.docker.com/compose/reference/overview/.
+
+    Options
+      --file, -f            A .yaml file not in the current directory which contains
+                            the now-compose configuration.
+
+      --version, -v         Displays app version.
+
+      --help, -h            Displays this message.
+  `)
+
+  process.exit(0)
+}
+
+if (showVersion) {
+  console.log(`
+    version: ${version}
+  `)
+
+  process.exit(0)
+}
+
+if (args[command]) {
+  console.log(`
+    No commands specified to run. Exiting...
+  `)
+}
+
+run(command, args)
