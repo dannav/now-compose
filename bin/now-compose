@@ -77,4 +77,11 @@ if (args[command]) {
   `)
 }
 
-run(command, args)
+;(async () => {
+  try {
+    await run(command, args)
+  } catch (err) {
+    // TODO :- create general error message
+    console.log('An uncatched error happened.')
+  }
+})()

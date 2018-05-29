@@ -1,2 +1,15 @@
+# dependencies
 node_modules
-now-compose.code-workspace
+package-lock.json
+
+# logs
+*.log
+
+# coverage
+.nyc_output
+coverage
+
+# misc
+.DS_Store
+*.code-workspace
+*.yaml
