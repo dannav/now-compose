@@ -20,7 +20,8 @@ const args = arg(
     '-v': '--version'
   },
   {
-    argv: processArgs
+    argv: processArgs,
+    permissive: true
   }
 )
 
