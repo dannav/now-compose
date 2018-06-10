@@ -3,6 +3,7 @@
 // App
 const run = require('../lib/cli')
 const { version } = require('../package')
+const errors = require('../lib/errors')
 
 // Deps
 const arg = require('arg')
@@ -37,16 +38,11 @@ if (showHelp || !command) {
     Usage
       $ now-compose <now-compose command || docker-compose command>
     Now Compose Commands
-      up                    Run docker-compose "up" command. now-compose will intercept
-                            any static or nodejs service configurations and serve them with micro-proxy.
+      up                    Run docker-compose "up" command. Host names for linked
+                            services will be passed in environment variables to
+                            docker containers.
 
-      stop                  Run docker-compose "stop" command. now-compose will
-                            stop any services currently running with micro-proxy.
-
-      down                  Run docker-compose "down" command. now-compose will
-                            stop any services currently running with micro-proxy.
-
-      deploy                Deploy your project to zeit/now. docker-compose deploy is not supported.
+      deploy                Deploy your project to zeit/now.
 
     Docker Compose Commands
       now-compose forwards all other commands to docker-compose with any arguments
@@ -76,13 +72,15 @@ if (args[command]) {
   console.log(`
     No commands specified to run. Exiting...
   `)
+
+  process.exit(0)
 }
 
 ;(async () => {
   try {
     await run(command, args)
   } catch (err) {
-    // TODO :- create general error message
-    console.log('An uncatched error happened.')
+    console.log(errors.general(err))
+    process.exit(1)
   }
 })()
