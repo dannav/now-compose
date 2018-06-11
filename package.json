@@ -8,9 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "arg": "^2.0.0",
+    "command-exists": "^1.2.6",
     "js-yaml": "^3.11.0"
   },
   "devDependencies": {

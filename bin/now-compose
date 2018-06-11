@@ -7,6 +7,7 @@ const errors = require('../lib/errors')
 
 // Deps
 const arg = require('arg')
+const commandExists = require('command-exists')
 
 const processArgs = process.argv.slice(2)
 
@@ -78,6 +79,13 @@ if (args[command]) {
 
 ;(async () => {
   try {
+    try {
+      await commandExists('docker-compose')
+    } catch (_) {
+      console.log(errors.dockerComposeNotInstalled())
+      process.exit(1)
+    }
+
     await run(command, args)
   } catch (err) {
     console.log(errors.general(err))

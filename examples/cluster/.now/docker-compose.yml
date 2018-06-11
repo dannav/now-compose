@@ -1,0 +1,48 @@
+version: '3'
+services:
+  web:
+    build: ../web
+    ports:
+      - '3000:3000'
+    restart: on-failure
+    links:
+      - api
+    depends_on:
+      - api
+    environment:
+      PORT: '3000'
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+      NOW_HOST_API: 'localhost:3001'
+  api:
+    build: ../api
+    ports:
+      - '3001:3000'
+    restart: on-failure
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      PORT: '3001'
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+      NOW_HOST_DB: 'localhost:3306'
+  db:
+    build: ../db
+    ports:
+      - '3306:3306'
+    restart: on-failure
+    volumes:
+      - 'mysql-data:/var/lib/mysql'
+    environment:
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_HOST: '%'
+volumes:
+  mysql-data: null
