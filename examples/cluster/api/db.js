@@ -1,18 +1,9 @@
 const mysql = require('mysql')
 
-console.log('ENV', process.env)
-
-console.log({
-  charset: 'utf8mb4',
-  host: process.env.NOW_HOST_DB,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE
-})
-
 const db = mysql.createPool({
   charset: 'utf8mb4',
   host: process.env.NOW_HOST_DB,
+  port: process.env.NOW_PORT_DB,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE

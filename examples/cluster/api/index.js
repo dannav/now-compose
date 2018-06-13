@@ -1,17 +1,16 @@
 const micro = require('micro')
-const { json } = require('micro')
-// const db = require('./db')
+const { send } = require('micro')
+const db = require('./db')
 
 // ENV VARS
-const port = process.env.port || 3000
+const port = process.env.PORT || 3000
 
 const server = micro(async (req, res) => {
-  console.log(process.env)
-  // const people = await db.query(`
-  //   SELECT * FROM people
-  // `)
+  const people = await db.query(`
+    SELECT * FROM people
+  `)
 
-  return json({ hello: 'world' })
+  send(res, 200, people)
 })
 
 console.log(`Server started on port :${port}`)

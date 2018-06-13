@@ -6,6 +6,7 @@
   "license": "MIT",
   "bin": "index.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "micro": "^9.3.2"
   }
 }

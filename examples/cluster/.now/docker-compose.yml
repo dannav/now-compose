@@ -2,6 +2,7 @@ version: '3'
 services:
   web:
     build: ../web
+    image: cluster-web
     ports:
       - '3000:3000'
     restart: on-failure
@@ -14,11 +15,13 @@ services:
       MYSQL_DATABASE: example
       MYSQL_USER: example
       MYSQL_PASSWORD: example
-      NOW_HOST_API: 'localhost:3001'
+      NOW_HOST_API: host.docker.internal
+      NOW_PORT_API: '3001'
   api:
     build: ../api
+    image: cluster-api
     ports:
-      - '3001:3000'
+      - '3001:3001'
     restart: on-failure
     links:
       - db
@@ -29,9 +32,11 @@ services:
       MYSQL_DATABASE: example
       MYSQL_USER: example
       MYSQL_PASSWORD: example
-      NOW_HOST_DB: 'localhost:3306'
+      NOW_HOST_DB: host.docker.internal
+      NOW_PORT_DB: '3306'
   db:
     build: ../db
+    image: cluster-db
     ports:
       - '3306:3306'
     restart: on-failure
