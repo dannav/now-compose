@@ -16,10 +16,14 @@ const args = arg(
     '--help': Boolean,
     '--file': String,
     '--version': Boolean,
+    '--public': Boolean,
+    '--apiKey': String,
 
     '-h': '--help',
     '-f': '--file',
-    '-v': '--version'
+    '-v': '--version',
+    '-p': '--public',
+    '-k': '--apiKey'
   },
   {
     argv: processArgs,
@@ -43,7 +47,9 @@ if (showHelp || !command) {
                             services will be passed in environment variables to
                             docker containers.
 
-      deploy                Deploy your project to zeit/now.
+      deploy                Deploy your project to zeit/now. *NOTE* If your account
+                            is under the zeit OSS plan you must set the '-p' flag
+                            to deploy your project as public.
 
     Docker Compose Commands
       now-compose forwards all other commands to docker-compose with any arguments
@@ -52,6 +58,12 @@ if (showHelp || !command) {
     Options
       --file, -f            A .yaml file not in the current directory which contains
                             the now-compose configuration.
+
+      --apiKey, -k          Your account's Zeit API token.
+
+      --public, -p          A boolean indicating if the deployment's code is public.
+                            For every deployment done under the OSS plan, this needs
+                            to be set to true. The default will be false.
 
       --version, -v         Displays app version.
 

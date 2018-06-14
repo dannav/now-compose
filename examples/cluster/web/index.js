@@ -4,6 +4,7 @@ const axios = require('axios')
 
 // ENV VARS
 const port = process.env.port || 3000
+const isDeployed = process.env.NOW_DEPLOYED ? true : false
 const apiPort = process.env.NOW_PORT_API
 const apiHost = process.env.NOW_HOST_API
 
@@ -13,7 +14,10 @@ const readme = `
 `
 
 const server = micro(async (req, res) => {
-  const apiURL = `http://${apiHost}:${apiPort}`
+  const apiURL = isDeployed
+    ? `https://${apiHost}`
+    : `http://${apiHost}:${apiPort}`
+
   const r = await axios.get(apiURL)
 
   if (r.status == 200) {

@@ -1,31 +1,46 @@
-# Cluster Example Project
+This project is an example of how you can setup a microservice architecture
+locally using now-compose.
 
-This project is an example of how you could setup a cluster of microservices to
-develop locally with now-compose. This example shows you how you could link together
-many microservices for use with now-compose.
+This architecture is broken up into 3 microservices:
 
-This microservice cluster is broken up into 3 services.
+- db - a mysql database with example data
+- api - a microservice that queries `db` and returns all data as json
+- web - a microservice that makes an http request to `api` to display all data in `db`
 
-## db
+## Preparing the project
 
-A mysql database with example data
+For this example [zeit/pkg](https://github.com/zeit/pkg) is used to compile all
+Node.js services into a binary for linux. Which we will ultimately copy into our
+Docker containers during the container building process.
 
-## api
+The following steps will need to be run from a terminal in this directory:
 
-An api that returns all rows of the `people` table in `db`.
+1.  run `make` to generate all binaries in their project's `build` folder.
+2.  run `now-compose up` to spin up the microservices and get a stream of logs from them
 
-## web
+## Configuration of each service
 
-A service that requests data from the api and returns it for all responses
+The following are the container configurations of each service:
 
-# Getting Started
+### db
 
-1.  run `make` to build generate binaries for services and build docker containers
-2.  run `now-compose up` to setup environment locally
-3.  test deployment with `now-compose deploy`
+- bound to: `localhost:3306`
+- mysql db: `example`
+- mysql username: `example`
+- password: `example`
 
-# Making Modifications
+### api
+
+- bound to: `localhost:3001`
+
+### web
+
+- bound to: `localhost:3000`
+
+---
+
+## Modifications
 
 Builds on containers will be cached by default. If you make modifications and changes
-aren't seen with `now-compose up` you can force a rebuild of containers with
-`now-compose up --no-cache`.
+aren't seen with `now-compose up` you can force a rebuild of all containers by passing
+the `--no-cache` flag to the up command: `now-compose up --no-cache`.

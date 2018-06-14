@@ -13,3 +13,6 @@ coverage
 .DS_Store
 *.code-workspace
 *.yaml
+
+# env file for now api key (dev / test purposes only)
+key.env

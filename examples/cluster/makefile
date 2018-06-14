@@ -3,6 +3,8 @@ SHELL := /bin/bash
 
 install_deps:
 	npm i pkg -g
+	cd ./api && npm i
+	cd ./web && npm i
 
 build_api:
 	rm -rf ./api/build
