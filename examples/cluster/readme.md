@@ -1,9 +1,12 @@
 This project is an example of how you can setup a microservice architecture
 locally using now-compose.
 
-This architecture is broken up into 3 microservices:
+You can view this example project host on zeit now at [https://web-fmecyzwicu.now.sh/](https://web-fmecyzwicu.now.sh/)
 
-- db - a mysql database with example data
+---
+
+This architecture is broken up into 2 microservices:
+
 - api - a microservice that queries `db` and returns all data as json
 - web - a microservice that makes an http request to `api` to display all data in `db`
 
@@ -22,13 +25,6 @@ The following steps will need to be run from a terminal in this directory:
 
 The following are the container configurations of each service:
 
-### db
-
-- bound to: `localhost:3306`
-- mysql db: `example`
-- mysql username: `example`
-- password: `example`
-
 ### api
 
 - bound to: `localhost:3001`
@@ -36,6 +32,16 @@ The following are the container configurations of each service:
 ### web
 
 - bound to: `localhost:3000`
+
+## Deploying to zeit/now
+
+Make sure that you generate a new API token for now-compose to use.
+
+Generate an api token for `now-compose` to use [in the zeit dashboard](https://zeit.co/account/tokens)
+
+After running `make` you can deploy to zeit now with `now-compose deploy --apiKey=<your api token here>`.
+
+When the services are finished deploying you should get two urls back for each service.
 
 ---
 
