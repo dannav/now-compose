@@ -6,6 +6,7 @@ const { version } = require('../package')
 const errors = require('../lib/errors')
 
 // Deps
+const chalk = require('chalk')
 const arg = require('arg')
 const commandExists = require('command-exists')
 
@@ -37,25 +38,33 @@ const { '--help': showHelp, '--version': showVersion } = args
 
 // if no command is passed in show help screen
 if (showHelp || !command) {
-  console.log(`
-    Description
-      Docker compose for zeit/now.
-    Usage
-      $ now-compose <now-compose command || docker-compose command>
-    Now Compose Commands
+  console.log(chalk`
+    {bold.cyan now-compose} - docker compose for zeit/now.
+
+    {bold USAGE}
+
+      {bold $} {cyan now-compose} --help
+      {bold $} {cyan now-compose} --version
+      {bold $} {cyan now-compose} <now-compose command || docker-compose command>
+
+    {bold NOW COMPOSE COMMANDS}
+
       up                    Run docker-compose "up" command. Host names for linked
                             services will be passed in environment variables to
                             docker containers.
 
-      deploy                Deploy your project to zeit/now. *NOTE* If your account
-                            is under the zeit OSS plan you must set the '-p' flag
-                            to deploy your project as public.
+      deploy                Deploy your project to zeit/now.
 
-    Docker Compose Commands
-      now-compose forwards all other commands to docker-compose with any arguments
+                            {bold *NOTE* If your account is under the zeit OSS plan, you must
+                            set the {cyan -p} flag to deploy your project as public.}
+
+    {bold DOCKER COMPOSE COMMANDS}
+
+      {cyan now-compose} forwards all other commands to docker-compose with any arguments
       you have defined. Please refer to https://docs.docker.com/compose/reference/overview/.
 
-    Options
+    {bold OPTIONS}
+
       --file, -f            A .yaml file not in the current directory which contains
                             the now-compose configuration.
 
@@ -74,17 +83,15 @@ if (showHelp || !command) {
 }
 
 if (showVersion) {
-  console.log(`
-    version: ${version}
-  `)
+  console.log(errors.info(`version: ${version}`))
 
   process.exit(0)
 }
 
 if (args[command]) {
-  console.log(`
-    No commands specified to run. Exiting...
-  `)
+  const warning = errors.warning(`No commands specified to run. Exiting...`)
+
+  errors.warn(warning)
 
   process.exit(0)
 }
@@ -94,13 +101,11 @@ if (args[command]) {
     try {
       await commandExists('docker-compose')
     } catch (_) {
-      console.log(errors.dockerComposeNotInstalled())
-      process.exit(1)
+      errors.exit(errors.dockerComposeNotInstalled())
     }
 
     await run(command, args)
   } catch (err) {
-    console.log(errors.general(err))
-    process.exit(1)
+    errors.exit(errors.general(err))
   }
 })()

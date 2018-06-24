@@ -14,5 +14,8 @@ coverage
 *.code-workspace
 *.yaml
 
+# editor settings
+*.code-workspace
+
 # env file for now api key (dev / test purposes only)
 key.env
