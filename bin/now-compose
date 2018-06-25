@@ -53,6 +53,10 @@ if (showHelp || !command) {
                             services will be passed in environment variables to
                             docker containers.
 
+                            {bold *NOTE* When developing locally and containers are not being updated
+                            you can rebuild the containers without cache by using the "--no-cache"
+                            flag.}
+
       deploy                Deploy your project to zeit/now.
 
                             {bold *NOTE* If your account is under the zeit OSS plan, you must
@@ -77,6 +81,8 @@ if (showHelp || !command) {
       --version, -v         Displays app version.
 
       --help, -h            Displays this message.
+
+      --no-cache            Rebuild docker containers when using the "up" command.
   `)
 
   process.exit(0)

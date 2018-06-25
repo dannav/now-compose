@@ -1,13 +1,26 @@
 {
   "name": "now-compose",
   "version": "1.0.0",
-  "description": "",
+  "description": "A command line interface for developing and deploying applications with docker-compose for zeit/now.",
   "main": "index.js",
+  "files": [
+    "bin",
+    "lib"
+  ],
   "scripts": {
     "test": "jest --silent",
     "testandlog": "jest"
   },
-  "keywords": [],
+  "keywords": [
+    "now",
+    "microservice",
+    "docker-compose",
+    "now-compose",
+    "zeit"
+  ],
+  "bin": {
+    "now-compose": "./bin/now-compose"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
