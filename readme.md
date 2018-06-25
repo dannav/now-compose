@@ -1,10 +1,10 @@
 [![CircleCI](https://circleci.com/gh/dannav/now-compose.svg?style=svg&circle-token=a204b7c6925f4014b03ffed857005beb2b98b97e)](https://circleci.com/gh/dannav/now-compose)
 
-`now-compose` is a command line interface for developing and deploying applications with `docker-compose` for [zeit/now](https://zeit.co/now).
+`now-compose` is a command line interface for developing and deploying applications with docker-compose for [zeit/now](https://zeit.co/now).
 
 ## Usage
 
-`now-compose` behaves as a wrapper around `docker-compose`. To get started, you will need `docker` and `docker-compose` setup on your machine. To install these dependencies visit [the docker-compose install guide](https://docs.docker.com/compose/install/).
+`now-compose` behaves as a wrapper around docker-compose. To get started, you will need docker and docker-compose setup on your machine. To install these dependencies visit [the docker-compose install guide](https://docs.docker.com/compose/install/).
 
 Install `now-compose`:
 
@@ -12,11 +12,11 @@ Install `now-compose`:
 npm i -g now-compose
 ```
 
-Setup a `now-compose.yml` file exactly as you would a version 3 `docker-compose.yml` file in your project's directory. If you're already working on a project with a `docker-compose.yml` you can tell `now-compose` to use it with the `-f` flag. **`now-compose` only supports the docker compose `version "3"` config syntax.**
+If you're already working on a project using docker-compose you can tell `now-compose` to use it with the `-f` flag. `now-compose` only supports the docker-compose version 3 config syntax. You can learn more about the syntax at the [config reference here](https://docs.docker.com/compose/compose-file/).
 
 _By default, `now-compose` will look for a `now-compose.yml` file in the current working directory._
 
-You can then use `now-compose` as you would use `docker-compose`. For instance, in a directory with a `now-compose.yml` file:
+You can then use `now-compose` as you would use docker-compose. For instance, in a directory with a `now-compose.yml` file:
 
 ```
 now-compose up -d
@@ -40,9 +40,9 @@ To view an example project built with `now-compose` take a look at the [cluster 
 
 ## Developing locally with now-compose
 
-Using `now-compose` is identical to using `docker-compose` except for a couple of scenarios.
+Using `now-compose` is identical to using docker-compose except for a small set of differences.
 
-The first is networking between containers defined in `docker-compose`. Usually for services defined in a `docker-compose.yml` file you would make requests to another service by making a request to a url that has the services hostname in the url.
+The first is networking between containers defined in docker-compose. Usually for services defined in a `docker-compose.yml` file you would make requests to another service by making a request to a url that has the service's hostname in the url.
 
 ```yaml
 version: "3"
@@ -57,7 +57,7 @@ services:
       - 3001:3001
 ```
 
-i.e. in the above example `web` could make a request to `api` by requesting `http://api`. `now-compose` will handle this for you, but you will want to reference the urls defined in environment variables that `now-compose` will provide your application.
+i.e. in the above example `web` can make a request to `api` by requesting `http://api`. `now-compose` will handle this for you, but you will want to reference the urls defined in environment variables that `now-compose` will provide to your application.
 
 | Environment Var   | Description                                                     | Example        |
 | ----------------- | --------------------------------------------------------------- | -------------- |
@@ -66,9 +66,13 @@ i.e. in the above example `web` could make a request to `api` by requesting `htt
 
 ---
 
-The second difference from `docker-compose`, is that all services defined in `now-compose.yml` must have a `build` property defined that points to the location of that service's `Dockerfile`. Since a `Dockerfile` must be defined for deployments to [zeit/now](https://zeit.co/now). Any services that do not contain a `build` property will run locally, but during deployment they will be skipped.
+The second difference from docker-compose, is that all services defined in `now-compose.yml` must have a `build` property defined that points to the location of that service's `Dockerfile`. Since a `Dockerfile` must be defined for deployments to [zeit/now](https://zeit.co/now). Any services that do not contain a `build` (i.e. use an image) property will run locally, but during deployment they will be skipped.
 
-_This allows you to still setup a database locally for development purposes. But skip it's deployment_
+_This allows you to still setup a database locally for development purposes. But skips its deployment._
+
+---
+
+The third difference is that services defined in `now-compose.yml` must not contain special characters. Only letters, digits and '_' are allowed.
 
 ## Deploying to zeit now
 
@@ -83,9 +87,14 @@ You can then deploy your application with:
 now-compose deploy --apiKey=<your api token>
 ```
 
+_You can also provide `now-compose` an api token by setting the environment variable `NOW_API_KEY`._
+
+
 A deployment will be created for each service defined in `now-compose.yml` in order of the `depends_on` property set for each service in `now-compose.yml`.
 
-Any services that are `linked` (using the "links" property in your application's config) will have the environment variables `NOW_HOST_<SERVICENAME>` set the deployment url of linked services. `NOW_PORT_<SERVICENAME>` will be `443` since zeit only serves requests over https.
+Any services that are `linked` (using the "links" property in your application's config) will have the environment variables `NOW_HOST_<SERVICENAME>` set to the deployment url of linked services. `NOW_PORT_<SERVICENAME>` will be `443` since zeit only serves requests over https.
+
+Happy Developing 🎉
 
 ## Contributing
 

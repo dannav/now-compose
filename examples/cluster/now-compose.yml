@@ -2,21 +2,28 @@ version: "3"
 services:
   web:
     build: ./web
-    image: cluster-web
     ports:
       - 3000:3000
     restart: on-failure
     links:
-      - api
+      - people_api
+      - locations_api
     depends_on:
-      - api
+      - people_api
+      - locations_api
     environment:
       PORT: "3000"
-  api:
-    build: ./api
-    image: cluster-api
+  people_api:
+    build: ./people_api
     ports:
       - 3001:3001
     restart: on-failure
     environment:
       PORT: "3001"
+  locations_api:
+    build: ./locations_api
+    ports:
+      - 3002:3002
+    restart: on-failure
+    environment:
+      PORT: "3002"

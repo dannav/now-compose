@@ -1,0 +1,11 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Danny Navarro",
+  "license": "MIT",
+  "bin": "index.js",
+  "dependencies": {
+    "micro": "^9.3.2"
+  }
+}
