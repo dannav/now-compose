@@ -1,8 +1,12 @@
+<p align="center">
+  <img src="https://cldup.com/liw8ofCBBw.png" width="491px" height="156px" alt="now-compose" />
+</p>
+
 [![CircleCI](https://circleci.com/gh/dannav/now-compose.svg?style=svg&circle-token=a204b7c6925f4014b03ffed857005beb2b98b97e)](https://circleci.com/gh/dannav/now-compose)
 
-`now-compose` is a command line interface for developing and deploying applications with docker-compose for [zeit/now](https://zeit.co/now).
+`now-compose` is a command line interface for developing and deploying applications with docker-compose for [zeit now](https://zeit.co/now).
 
-## Usage
+## Setup
 
 `now-compose` behaves as a wrapper around docker-compose. To get started, you will need docker and docker-compose setup on your machine. To install these dependencies visit [the docker-compose install guide](https://docs.docker.com/compose/install/).
 
@@ -12,11 +16,13 @@ Install `now-compose`:
 npm i -g now-compose
 ```
 
-If you're already working on a project using docker-compose you can tell `now-compose` to use it with the `-f` flag. `now-compose` only supports the docker-compose version 3 config syntax. You can learn more about the syntax at the [config reference here](https://docs.docker.com/compose/compose-file/).
+## Usage
 
-_By default, `now-compose` will look for a `now-compose.yml` file in the current working directory._
+If you're already working on a project using docker-compose you can tell `now-compose` to use your `docker-compose.yml` file with the `-f` flag. Otherwise, rename `docker-compose.yml` to `now-compose.yml`. `now-compose` only supports the docker-compose version 3 config syntax. You can learn more about the syntax at the [config reference here](https://docs.docker.com/compose/compose-file/) if you need to upgrade.
 
-You can then use `now-compose` as you would use docker-compose. For instance, in a directory with a `now-compose.yml` file:
+> By default, `now-compose` will look for a `now-compose.yml` file in the current working directory.
+
+You can then use `now-compose` as you would use docker-compose. For instance, in a directory with a `now-compose.yml` file run the following to start all containers defined in your config:
 
 ```
 now-compose up -d
@@ -38,11 +44,11 @@ now-compose --help
 
 To view an example project built with `now-compose` take a look at the [cluster example](./examples/cluster).
 
-## Developing locally with now-compose
+## Differences when developing with now-compose compared to docker-compose
 
-Using `now-compose` is identical to using docker-compose except for a small set of differences.
+There are a couple of small differences to keep in mind when using `now-compose` vs docker-compose.
 
-The first is networking between containers defined in docker-compose. Usually for services defined in a `docker-compose.yml` file you would make requests to another service by making a request to a url that has the service's hostname in the url.
+The first is networking between containers. Usually for services defined in a `docker-compose.yml` file you would make requests to another service by requesting a url that has the service's name in the url.
 
 ```yaml
 version: "3"
@@ -51,13 +57,15 @@ services:
     build: ./web
     links:
       - api
+    ports:
+      - 3000:3000
   api:
     build: ./api
     ports:
       - 3001:3001
 ```
 
-i.e. in the above example `web` can make a request to `api` by requesting `http://api`. `now-compose` will handle this for you, but you will want to reference the urls defined in environment variables that `now-compose` will provide to your application.
+i.e. in the above example `web` can make a request to `api` by requesting `http://api`. `now-compose` will handle this for you, however you will want to reference the urls defined in environment variables that `now-compose` will provide to your application.
 
 | Environment Var   | Description                                                     | Example        |
 | ----------------- | --------------------------------------------------------------- | -------------- |
@@ -66,18 +74,18 @@ i.e. in the above example `web` can make a request to `api` by requesting `http:
 
 ---
 
-The second difference from docker-compose, is that all services defined in `now-compose.yml` must have a `build` property defined that points to the location of that service's `Dockerfile`. Since a `Dockerfile` must be defined for deployments to [zeit/now](https://zeit.co/now). Any services that do not contain a `build` (i.e. use an image) property will run locally, but during deployment they will be skipped.
+The second difference from docker-compose, is that all services defined in `now-compose.yml` must have a `build` property defined that points to the location of that service's `Dockerfile`. Since a `Dockerfile` must be defined for deployments to [zeit now](https://zeit.co/now). Any services that do not contain a `build` property (i.e. reference a docker image) will run locally, but they will be skipped during deployment.
 
-_This allows you to still setup a database locally for development purposes. But skips its deployment._
+> This allows you to setup a database locally for development purposes. But skip the deployment to zeit now.
 
 ---
 
-The third difference is that services defined in `now-compose.yml` must not contain special characters. Only letters, digits and '_' are allowed.
+The third difference is that service names defined in `now-compose.yml` must not contain special characters. Only letters, digits and '_' are allowed.
 
 ## Deploying to zeit now
 
-Before you can deploy a project using `now-compose` to [zeit/now](https://zeit.co/now), you need to provide
-and API token to use for your account.
+Before you can deploy a project using `now-compose` to [zeit now](https://zeit.co/now), you need to provide
+an API token generated to make requests to the now API on behalf of your account.
 
 Visit the [token creation screen](https://zeit.co/account/tokens) and generate a new one for use by `now-compose`.
 
@@ -87,8 +95,10 @@ You can then deploy your application with:
 now-compose deploy --apiKey=<your api token>
 ```
 
-_You can also provide `now-compose` an api token by setting the environment variable `NOW_API_KEY`._
+> You can also provide `now-compose` an api token by setting the environment variable `NOW_API_KEY` with the value of your token.
 
+
+### Deployment order
 
 A deployment will be created for each service defined in `now-compose.yml` in order of the `depends_on` property set for each service in `now-compose.yml`.
 
