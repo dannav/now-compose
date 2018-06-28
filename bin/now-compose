@@ -2,15 +2,38 @@
 
 // App
 const run = require('../lib/cli')
-const { version } = require('../package')
+const pkg = require('../package')
 const errors = require('../lib/errors')
 
 // Deps
 const chalk = require('chalk')
 const arg = require('arg')
 const commandExists = require('command-exists')
+const checkForUpdate = require('update-check')
 
 const processArgs = process.argv.slice(2)
+
+// Check for updates
+const updateCheck = async isDebugging => {
+  const warning = message => chalk`{yellow WARNING:} ${message}`
+  let update = null
+
+  try {
+    update = await checkForUpdate(pkg)
+  } catch (err) {
+    console.error(warning(`Checking for updates failed.`))
+  }
+
+  if (!update) {
+    return
+  }
+
+  console.log(
+    `${chalk.bgRed(
+      ' UPDATE AVAILABLE '
+    )} The latest version of \`now-compose\` is ${update.latest}`
+  )
+}
 
 const args = arg(
   {
@@ -89,7 +112,7 @@ if (showHelp || !command) {
 }
 
 if (showVersion) {
-  console.log(errors.info(`version: ${version}`))
+  console.log(errors.info(`version: ${pkg.version}`))
 
   process.exit(0)
 }
@@ -104,6 +127,8 @@ if (args[command]) {
 
 ;(async () => {
   try {
+    await updateCheck()
+
     try {
       await commandExists('docker-compose')
     } catch (_) {
