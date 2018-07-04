@@ -1,6 +1,6 @@
 {
   "name": "now-compose",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A command line interface for developing and deploying applications with docker-compose for zeit now.",
   "main": "index.js",
   "files": [

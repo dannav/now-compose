@@ -1,7 +1,7 @@
 This project is an example of how you can setup a microservice architecture
 locally using now-compose.
 
-For demo purposes this example is hosted on zeit now at [https://web-rpicsipkpo.now.sh/](https://web-rpicsipkpo.now.sh/)
+For demo purposes this example is hosted on zeit now at [https://web-mrmyxtbfxg.now.sh](https://web-mrmyxtbfxg.now.sh)
 
 ## Architecture of the example project
 

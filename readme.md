@@ -16,6 +16,8 @@ Install `now-compose`:
 npm i -g now-compose
 ```
 
+now-compose is also available as an executable. Check the [releases](https://github.com/dannav/now-compose/releases) to find one for your system. You will then want to move that executable to a folder in your `PATH` environment variable to use from the command line.
+
 ## Usage
 
 If you're already working on a project using docker-compose you can tell `now-compose` to use your `docker-compose.yml` file with the `-f` flag. Otherwise, rename `docker-compose.yml` to `now-compose.yml`. `now-compose` only supports the docker-compose version 3 config syntax. You can learn more about the syntax at the [config reference here](https://docs.docker.com/compose/compose-file/) if you need to upgrade.

@@ -19,3 +19,6 @@ coverage
 
 # env file for now api key (dev / test purposes only)
 key.env
+
+# ignore releases folder that hold pkg'd binaries
+releases
