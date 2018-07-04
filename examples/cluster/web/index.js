@@ -35,8 +35,6 @@ const getData = async url => {
 }
 
 const server = micro(async (req, res) => {
-  console.log(peopleAPIURL, locationsAPIURL)
-
   try {
     const people = await getData(peopleAPIURL)
     const locations = await getData(locationsAPIURL)

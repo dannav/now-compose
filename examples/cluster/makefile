@@ -1,4 +1,4 @@
-PHONY: docker
+PHONY: pkg
 SHELL := /bin/bash
 
 install_deps:
@@ -20,5 +20,5 @@ build_web:
 	pkg ./web --targets latest-linux-x64 --output ./web/build/web
 
 # install dependencies, pkg node apps
-docker: install_deps build_locations build_people build_web
+pkg: install_deps build_locations build_people build_web
 	@echo -e "\ndone :-)\n"
