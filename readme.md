@@ -1,3 +1,5 @@
+<p align="center" color="red">now has fundamentally changed as of 2.0 so development of this project has stopped. Please read the now release <a href="https://zeit.co/blog/now-2">here</a> for more info. Thanks for everyone who has tried this out!</p> 
+</br>
 <p align="center">
   <img src="https://cldup.com/liw8ofCBBw.png" width="491px" height="156px" alt="now-compose" />
 </p>
